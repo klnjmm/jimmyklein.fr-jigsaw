@@ -5,19 +5,24 @@ use Illuminate\Support\Str;
 return [
     'baseUrl' => '',
     'production' => false,
-    'siteName' => 'Blog Starter Template',
+    'siteName' => 'Jimmy KLEIN',
     'siteDescription' => 'Generate an elegant blog with Jigsaw',
-    'siteAuthor' => 'Author Name',
-
+    'siteAuthor' => 'Jimmy KLEIN',
+    'links' => [
+        'twitter' => 'https://bit.ly/klnjmmtwitter',
+        'youtube' => 'https://bit.ly/klnjmmyoutube',
+        'github' => 'https://bit.ly/klnjmmgithub',
+        'devletter' => 'https://bit.ly/klnjmmdevletter',
+    ],
     // collections
     'collections' => [
         'posts' => [
-            'author' => 'Author Name', // Default author, if not provided in a post
+            'author' => 'Jimmy KLEIN',
             'sort' => '-date',
-            'path' => 'blog/{filename}',
+            'path' => '{filename}',
         ],
         'categories' => [
-            'path' => '/blog/categories/{filename}',
+            'path' => '/categories/{filename}',
             'posts' => function ($page, $allPosts) {
                 return $allPosts->filter(function ($post) use ($page) {
                     return $post->categories ? in_array($page->getFilename(), $post->categories, true) : false;
@@ -29,6 +34,15 @@ return [
     // helpers
     'getDate' => function ($page) {
         return Datetime::createFromFormat('U', $page->date);
+    },
+    'getDateInFrench' => function ($page) {
+        $fmt = new IntlDateFormatter('fr_FR',          IntlDateFormatter::MEDIUM,
+            IntlDateFormatter::NONE,
+            'Europe/Paris',
+            IntlDateFormatter::GREGORIAN,
+        );
+
+        return $fmt->format($page->date);
     },
     'getExcerpt' => function ($page, $length = 255) {
         if ($page->excerpt) {
